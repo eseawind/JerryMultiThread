@@ -30,7 +30,7 @@ public class TraditionalThreadCommunication {
 class Business{
 	private boolean bShouldSub = true;
 	public synchronized void sub(int i) {
-		if(bShouldSub) {
+		while(bShouldSub) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -45,7 +45,7 @@ class Business{
 	}
 	
 	public synchronized void main(int i) {
-		if(!bShouldSub) {
+		while(!bShouldSub) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
