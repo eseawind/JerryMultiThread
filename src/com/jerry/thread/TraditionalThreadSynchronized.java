@@ -1,6 +1,10 @@
 package com.jerry.thread;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
- * 传统方式实现线程互斥
+ * 传统方式实现线程互斥(增加Lock)
  * @author Jerry Wang
  *
  */
@@ -52,12 +56,36 @@ public class TraditionalThreadSynchronized {
 //			}
 //		}
 		
-		public synchronized void output(String name) {
+// 		public void output(String name) {
+//			int len = name.length();
+//			synchronized(Outputer.class) {
+//				for(int i = 0; i < len; i++) {
+//					System.out.print(name.charAt(i));
+//				}
+//				System.out.println();
+//			}
+//		}
+ 		
+//		public synchronized void output(String name) {
+//			int len = name.length();
+//			for(int i = 0; i < len; i++) {
+//				System.out.print(name.charAt(i));
+//			}
+//			System.out.println();
+//		}
+		
+		Lock lock = new ReentrantLock();
+		public void output(String name) {
 			int len = name.length();
-			for(int i = 0; i < len; i++) {
-				System.out.print(name.charAt(i));
+			lock.lock();
+			try{
+				for(int i = 0; i < len; i++) {
+					System.out.print(name.charAt(i));
+				}
+				System.out.println();
+			} finally {
+				lock.unlock();
 			}
-			System.out.println();
 		}
 	}
 }
