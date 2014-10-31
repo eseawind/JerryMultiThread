@@ -1,6 +1,5 @@
 package com.jerry.thread;
 
-import java.util.Collections;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -39,17 +38,15 @@ public class BlockingQueueCommunication {
 
 	 static class Business {
 		 
-		 
 		  BlockingQueue<Integer> queue1 = new ArrayBlockingQueue<Integer>(1);
 		  BlockingQueue<Integer> queue2 = new ArrayBlockingQueue<Integer>(1);
 		  
 		  {
-			  Collections.synchronizedMap(null);
+//			  Collections.synchronizedMap(null);
 			  try {
 				  System.out.println("xxxxxdfsdsafdsa");
 				queue2.put(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		  }
@@ -58,7 +55,6 @@ public class BlockingQueueCommunication {
 			  	try {
 					queue1.put(1);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				for(int j=1;j<=10;j++){
@@ -67,7 +63,6 @@ public class BlockingQueueCommunication {
 				try {
 					queue2.take();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		  }
@@ -76,7 +71,6 @@ public class BlockingQueueCommunication {
 			  	try {
 					queue2.put(1);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				for(int j=1;j<=100;j++){
@@ -85,7 +79,6 @@ public class BlockingQueueCommunication {
 				try {
 					queue1.take();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		  }
