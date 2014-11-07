@@ -1,5 +1,8 @@
 package com.jerry.wait;
 
+/**
+ * 线程等待
+ */
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
