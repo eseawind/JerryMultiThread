@@ -1,7 +1,7 @@
 package com.jerry.wait;
 
 /**
- * 线程等待
+ * 线程等待的几种方法
  */
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,17 +19,50 @@ public class ThreadWait {
 			"yyyy-MM-dd HH:mm:ss");
 
 	public static void main(String[] args) throws Exception {
-
-		cyclicBarrierDemo();
+		join();
 
 	}
+	
+	private void doSomeWork() {
+		try {
+			Thread.sleep((long) (Math.random() * 10000));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void doSuperWork() {
+		System.out.println("Super Worker begin at " + sdf.format(new Date()));
+		try {
+			Thread.sleep((long) (Math.random() * 10000));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Super Worker end at " + sdf.format(new Date()));
+	}
+	
+	static class JoinWorker extends Thread {
+		String workerName;
 
+		public JoinWorker(String workerName) {
+			this.workerName = workerName;
+		}
+
+		public void run() {
+			System.out.println("Sub Worker " + workerName
+					+ " do work begin at " + sdf.format(new Date()));
+			new ThreadWait().doSomeWork();// 做实际工作
+			System.out.println("Sub Worker " + workerName
+					+ " do work complete at " + sdf.format(new Date()));
+		}
+	}
+	
 	/**
 	 * 使用线程自带的join方法，将子线程加到主线程中 主线程需要等待子线程完成才继续执行
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void joinDemo() throws InterruptedException {
+	public static void join() throws InterruptedException {
 		System.out.println("=========Test with join=====");
 		JoinWorker worker1 = new JoinWorker("worker1");
 		JoinWorker worker2 = new JoinWorker("worker2");
@@ -46,13 +79,11 @@ public class ThreadWait {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void countDownLatchDemo() throws InterruptedException {
+	public static void countDownLatch() throws InterruptedException {
 		System.out.println("=========Test with CountDownLatch=====");
 		CountDownLatch latch = new CountDownLatch(2);
-		CountDownLatchWorker worker1 = new CountDownLatchWorker("worker1",
-				latch);
-		CountDownLatchWorker worker2 = new CountDownLatchWorker("worker2",
-				latch);
+		CountDownLatchWorker worker1 = new CountDownLatchWorker("worker1",latch);
+		CountDownLatchWorker worker2 = new CountDownLatchWorker("worker2",latch);
 		worker1.start();
 		worker2.start();
 		// 主线程阻塞等待
@@ -67,7 +98,7 @@ public class ThreadWait {
 	 * CyclicBarrier初始时还可带一个Runnable的参数，
 	 * 此Runnable任务在CyclicBarrier的数目达到后，所有其它线程被唤醒前被执行。
 	 */
-	public static void cyclicBarrierDemo() throws InterruptedException,
+	public static void cyclicBarrier() throws InterruptedException,
 			BrokenBarrierException {
 		System.out.println("=========Test with CyclicBarrier=====");
 		CyclicBarrier cb = new CyclicBarrier(2, new Runnable() {
@@ -91,7 +122,7 @@ public class ThreadWait {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void callableDemo() throws InterruptedException {
+	public static void callable() throws InterruptedException {
 		System.out.println("=========Test with Callable=====");
 		List<Callable<Integer>> callList = new ArrayList<Callable<Integer>>();
 		ExecutorService exec = Executors.newFixedThreadPool(2);
@@ -120,41 +151,6 @@ public class ThreadWait {
 		exec.shutdown();
 		doSuperWork();
 
-	}
-
-	public static void doSuperWork() {
-		System.out.println("Super Worker begin at " + sdf.format(new Date()));
-		try {
-			Thread.sleep((long) (Math.random() * 10000));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("Super Worker end at " + sdf.format(new Date()));
-	}
-
-	private void doSomeWork() {
-		try {
-			Thread.sleep((long) (Math.random() * 10000));
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	static class JoinWorker extends Thread {
-		String workerName;
-
-		public JoinWorker(String workerName) {
-			this.workerName = workerName;
-		}
-
-		public void run() {
-			System.out.println("Sub Worker " + workerName
-					+ " do work begin at " + sdf.format(new Date()));
-			new ThreadWait().doSomeWork();// 做实际工作
-			System.out.println("Sub Worker " + workerName
-					+ " do work complete at " + sdf.format(new Date()));
-
-		}
 	}
 
 	static class CountDownLatchWorker extends Thread {
