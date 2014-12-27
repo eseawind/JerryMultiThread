@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+/**
+ * java线程池同步处理
+ * @author Jerry Wang
+ *
+ */
 public class App {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
