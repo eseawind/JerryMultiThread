@@ -29,10 +29,10 @@ public class SendMailServiceImpl implements SendMailService {
 	
 	public static void main(String[] args) {
 		SendMailService service = new SendMailServiceImpl();
-		for(int i = 50; i > 0; i--) {
-			service.sendMail("wangjiajun@58.com", "测试内容", "测试内容");
-			System.out.println("主线程"+ i + "执行完成！！");
-		}
+//		for(int i = 50; i > 0; i--) {
+//			service.sendMail("wangjiajun@58.com", "测试内容", "测试内容");
+//			System.out.println("主线程"+ i + "执行完成！！");
+//		}
+//	}
 	}
-	
 }
